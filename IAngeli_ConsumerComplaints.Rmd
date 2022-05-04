@@ -1,0 +1,70 @@
+---
+title: "ConsumerComplaints_InitialAnalysis"
+author: "Izzy Angeli"
+date: "5/3/2022"
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(readxl)
+library(writexl)
+library(ggplot2)
+
+data <- readRDS("complaints.rds")
+
+```
+
+## Consumer Complaints Mini-Project
+
+First, I'll be looking to see the category with the most complaints. 
+
+
+```{r cars}
+
+data %>% 
+  count(product, sort = TRUE)
+
+```
+
+## What complaint category has the biggest increase?
+
+```{r pressure, echo=FALSE}
+
+product_count_monthly <-
+data %>% 
+  count(product, mm_yy_received)
+
+product_count_monthly %>% 
+  mutate(product= str_replace(product, "Credit reporting, credit repair services, or other personal consumer reports", "Credit reports and repairs"), 
+         (product= str_replace(product, "Money transfer, virtual currency, or money service", "Money services"))
+
+
+
+
+```
+
+## How many complaints had to do with COVID? 
+
+```{r}
+
+```
+
+
+## What product was most commonly reported? 
+
+```{r}
+
+
+```
+
+
+## What state did most complaints come from? 
+```{r}
+
+```
+
