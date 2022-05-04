@@ -40,11 +40,7 @@ data %>%
   count(product, mm_yy_received)
 
 product_count_monthly %>% 
-  mutate(product= str_replace(product, "Credit reporting, credit repair services, or other personal consumer reports", "Credit reports and repairs"), 
-         (product= str_replace(product, "Money transfer, virtual currency, or money service", "Money services"))
-
-
-
+  mutate(product= str_replace(product, "Credit reporting, credit repair services, or other personal consumer reports", "Credit reports and repairs"),product= str_replace(product, "Money transfer, virtual currency, or money service" , "Money services"), product= str_replace(product, "Payday loan, title loan, or personal loan", "Payday, title, personal loans")) 
 
 ```
 
