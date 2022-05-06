@@ -39,14 +39,19 @@ product_count_monthly <-
 data %>% 
   count(product, mm_yy_received)
 
-product_count_monthly %>% 
+product_count_monthly <- product_count_monthly %>% 
   mutate(product= str_replace(product, "Credit reporting, credit repair services, or other personal consumer reports", "Credit reports and repairs"),product= str_replace(product, "Money transfer, virtual currency, or money service" , "Money services"), product= str_replace(product, "Payday loan, title loan, or personal loan", "Payday, title, personal loans")) 
+  
 
 ```
 
-## How many complaints had to do with COVID? 
+## Lets make a line graph for the table above
 
 ```{r}
+
+product_count_monthly %>%
+  ggplot(aes(x = mm_yy_received, y = n, group=product, color=product)) +
+  geom_line()
 
 ```
 
@@ -54,6 +59,9 @@ product_count_monthly %>%
 ## What product was most commonly reported? 
 
 ```{r}
+
+ggplot(product_count_monthly, aes(x=product, y=n, fill=product)) +
+  geom_col() + scale_fill_manual(values=c ("red", "pink", "orange", "yellow", "pink", "orange", "green", "blue" , "purple")) + theme(axis.text.x = element_text(angle = 90))
 
 
 ```
