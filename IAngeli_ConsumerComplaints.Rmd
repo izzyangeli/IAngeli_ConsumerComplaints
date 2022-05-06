@@ -1,39 +1,56 @@
 ---
-title: "ConsumerComplaints_InitialAnalysis"
-author: "Izzy Angeli"
-date: "5/3/2022"
-output: html_document
+title: "Consumer Complaints"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: scroll
 
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+# if (!require("DT")) install.packages('DT')
+xfun::session_info('DT')
+
+
 library(tidyverse)
 library(lubridate)
 library(janitor)
 library(readxl)
 library(writexl)
 library(ggplot2)
+library(DT)
+library(dtplyr)
+library(flexdashboard)
 
 data <- readRDS("complaints.rds")
 
 ```
 
-## Consumer Complaints Mini-Project
 
-First, I'll be looking to see the category with the most complaints. 
+Page 1
+=====================================  
+    
+Column {data-width=600}
+-------------------------------------
+    
+### Which product has the most complaints? : table 
 
-
-```{r cars}
+    
+```{r}
 
 data %>% 
   count(product, sort = TRUE)
 
 ```
+   
+Column {data-width=400}
+-------------------------------------
+   
+### Which product has the biggest complaint increase? 
 
-## What complaint category has the biggest increase?
-
-```{r pressure, echo=FALSE}
+```{r}
 
 product_count_monthly <-
 data %>% 
@@ -41,38 +58,48 @@ data %>%
 
 product_count_monthly <- product_count_monthly %>% 
   mutate(product= str_replace(product, "Credit reporting, credit repair services, or other personal consumer reports", "Credit reports and repairs"),product= str_replace(product, "Money transfer, virtual currency, or money service" , "Money services"), product= str_replace(product, "Payday loan, title loan, or personal loan", "Payday, title, personal loans")) 
-  
 
-```
 
-## Lets make a line graph for the table above
-
+```   
+ 
+Column {data-width=600}
+-------------------------------------
+### Biggest complaint increase: graph 
+    
 ```{r}
 
 product_count_monthly %>%
   ggplot(aes(x = mm_yy_received, y = n, group=product, color=product)) +
-  geom_line() + theme(axis.text.x = element_text(angle = 90))
+  geom_line() + theme(axis.text.x = element_text(angle = 90)) +ggtitle("Increasing Complaints") +labs(y= "N Complaints", x = "Month")
+
 
 ```
 
-
-## What product was most commonly reported? 
+Column {data-width=400}
+-------------------------------------
+   
+### What product was most commonly reported? : graph 
 
 ```{r}
 
 ggplot(product_count_monthly, aes(x=product, y=n, fill=product)) +
-  geom_col() + scale_fill_manual(values=c ("red", "pink", "orange", "yellow", "pink", "orange", "green", "blue" , "purple")) + theme(axis.text.x = element_text(angle = 90))
+  geom_col() + scale_fill_manual(values=c ("red", "pink", "orange", "yellow", "pink", "orange", "green", "blue" , "purple")) + theme(axis.text.x = element_text(angle = 90)) +ggtitle("Most Common Complaints")
 
 
-```
+```   
 
 
-## What state did most complaints come from? 
+Page 2 {data-orientation=rows}
+=====================================     
+   
+Row {data-height=600}
+-------------------------------------
+
+### About
+
 ```{r}
 
-data %>% 
-  count(state, sort = TRUE)
-
+#Data shown comes from Consumer Financial Protection Bureau. Complaints that the CFPB sends to companies for response are published in the Consumer Complaint Database after the company responds, confirming a commercial relationship with the consumer, or after 15 days, whichever comes first. Complaints can give us insights into problems people are experiencing in the marketplace and help us regulate consumer financial products and services under existing federal consumer financial laws, enforce those laws judiciously, and educate and empower consumers to make informed financial decisions.
 
 ```
 
