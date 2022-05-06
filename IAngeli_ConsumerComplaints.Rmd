@@ -51,7 +51,7 @@ product_count_monthly <- product_count_monthly %>%
 
 product_count_monthly %>%
   ggplot(aes(x = mm_yy_received, y = n, group=product, color=product)) +
-  geom_line()
+  geom_line() + theme(axis.text.x = element_text(angle = 90))
 
 ```
 
@@ -69,6 +69,10 @@ ggplot(product_count_monthly, aes(x=product, y=n, fill=product)) +
 
 ## What state did most complaints come from? 
 ```{r}
+
+data %>% 
+  count(state, sort = TRUE)
+
 
 ```
 
